@@ -16,9 +16,10 @@ function Todo(props) {
     return <div className="card">
       
     {props.isEdit.status && 
-        props.isEdit.idElement == props.todoInfo.id 
+        props.isEdit.idElement === props.todoInfo.id 
           ? <input onChange={handleChangeEdit} type="text" value={input}/> 
-          : <h2>{props.todoInfo.todo}</h2>}
+          : <h2>{props.todoInfo.todo}</h2>
+    }
     
     <div className="actions">
       {!props.isEdit.status ? <button onClick={() => props.edit(props.todoInfo.id)}>Edit</button> : <button onClick={handleSave}>Save</button> }
