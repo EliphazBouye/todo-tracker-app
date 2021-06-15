@@ -1,33 +1,34 @@
-import { useState, useEffect } from 'react';
+import {useState} from 'react'
+import {uuid} from 'uuidv4'
 
-// import Todo from './components/Todo'
-import GenerateUser from './components/GenerateUser'
+import Todo from './components/Todo'
 function App() {
 
-  const [user, setUser] = useState({firstName: '', lastName:'', email: '', phone: '', picture: '', city: ''});
-  useState(() => {
-     handleClick();
-  }, [])
+  const [input, setInput] = useState('')
+  const [todos, setTodos] = useState([])
 
-  function handleClick() {
-    fetch("https://randomuser.me/api/")
-    .then(res => res.json())
-    .then(
-      (data) =>{
-        let useObj = {firstName: data.results[0].name.first, lastName: data.results[0].name.last, email: data.results[0].email, phone: data.results[0].phone, picture: data.results[0].picture.large,city: data.results[0].location.city}
-        setUser(useObj)
-      }
-    )
+  function handleChange(e){
+    setInput(e.target.value)
   }
-  
+
+
+  function addNewTodo(){
+    let newTodo = {id: uuid() ,todo: input, status: false}
+
+    setTodos((todos) => [...todos, newTodo])
+    setInput("")
+  }
+
+  function deleteHandle(id) {
+    setTodos(todos.filter((i) => ((i.id) !== id)))
+  }
   return <div>
     <div>
-      {/* <h1>MY TODO</h1> */}
-      {/* <Todo todo="Learn Reactjs" />
-      <Todo todo="Learn NextJS"/>
-      <Todo todo="Learn Vuejs"/> */}
-        {console.log(user)}
-      <GenerateUser generate={handleClick} userInfo={user}/>
+      <h1>MY TODO</h1>
+      <input onChange={handleChange} type="text" value={input} placeholder="Add new todo" />
+      <button onClick={addNewTodo}>Add</button>
+      {todos.map((todo, i) => <Todo delete={deleteHandle} todoInfo={todo} key={todo.id} />)}
+      
     </div>
   </div>
 }
