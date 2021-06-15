@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
 
+// import Todo from './components/Todo'
+import GenerateUser from './components/GenerateUser'
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+  const [user, setUser] = useState({firstName: '', lastName:'', email: '', phone: '', picture: '', city: ''});
+  useState(() => {
+     handleClick();
+  }, [])
+
+  function handleClick() {
+    fetch("https://randomuser.me/api/")
+    .then(res => res.json())
+    .then(
+      (data) =>{
+        let useObj = {firstName: data.results[0].name.first, lastName: data.results[0].name.last, email: data.results[0].email, phone: data.results[0].phone, picture: data.results[0].picture.large,city: data.results[0].location.city}
+        setUser(useObj)
+      }
+    )
+  }
+  
+  return <div>
+    <div>
+      {/* <h1>MY TODO</h1> */}
+      {/* <Todo todo="Learn Reactjs" />
+      <Todo todo="Learn NextJS"/>
+      <Todo todo="Learn Vuejs"/> */}
+        {console.log(user)}
+      <GenerateUser generate={handleClick} userInfo={user}/>
     </div>
-  );
+  </div>
 }
 
 export default App;
